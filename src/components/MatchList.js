@@ -3,22 +3,27 @@ import Match from "./Match";
 function MatchList(props) {
   const list = props.data;
 
-  console.log(list);
-
-  return (
-    <div>
-      <div className="block">
-        <b>{list.score}</b> référence(s) trouvé pour la référence{" "}
-        <b>{list.ref}</b>
+  if (list.score > 0) {
+    return (
+      <div class="section">
+        <div class="block">
+          {list.site.map((data) => (
+            <Match data={data} />
+          ))}
+        </div>
       </div>
-
-      <div class="block">
-        {list.site.map((data) => (
-          <Match data={data} />
-        ))}
+    );
+  } else {
+    return (
+      <div class="section">
+        <div class="columns is-mobile">
+          <div class="column is-half is-offset-one-quarter has-text-centered">
+            <img src="inconnue.jpg" alt="Inconnue" />
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default MatchList;

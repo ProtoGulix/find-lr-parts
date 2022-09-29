@@ -1,13 +1,16 @@
 function Banner() {
-  const title = "Find LR Parts";
   return (
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="http://localhost:3000">
-          <img src="logo_large.png" alt="Réf & Co." />
-        </a>
-      </div>
-    </nav>
+    <div class="hero-head">
+      <nav class="navbar">
+        <div class="container">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="http://localhost:3000">
+              <img src="logo_white_large.png" alt="Réf & Co." />
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
   );
 }
 
