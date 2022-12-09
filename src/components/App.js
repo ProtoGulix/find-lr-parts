@@ -3,8 +3,6 @@ import Footer from "./Footer";
 import MatchList from "./MatchList";
 import Hero from "./Hero";
 import Load from "./Load";
-import FindCount from "./FindCount";
-import ListSiteWeb from "./ListSiteWeb";
 import React, { useState } from "react";
 
 function App() {
@@ -21,7 +19,7 @@ function App() {
     setSearch(false);
     event.preventDefault();
     setRef({ ref });
-    fetch(`http://212.227.212.30:8000/?ref=${ref}`)
+    fetch(`http://localhost:8000/?ref=${ref}`)
       .then((response) => response.json())
       .then((usefulData) => {
         setLoading(false);
@@ -34,43 +32,44 @@ function App() {
       });
   };
 
-  console.log(ref);
-
   return (
-    <div>
-      <section class="hero is-link is-small">
-        <Banner />
-        <div class="hero-body">
-          <div class="container has-text-centered is-4">
-            {welcome && <Hero />}
-            <form onSubmit={handleSubmit}>
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <input
-                    class="input is-medium"
-                    type="text"
-                    onChange={(e) => setRef(e.target.value)}
-                  />
-                </div>
-                <div class="control">
-                  <button class="button is-info is-medium" type="submit">
-                    Recherche
-                  </button>
-                </div>
+    <React.Fragment>
+      <div class="wrapper">
+        <section class="hero is-link">
+          <Banner />
+          <div class="hero-body">
+            <div class="columns is-multiline is-centered is-desktop">
+              <div class="column is-one-third">
+                {welcome && <Hero />}
+                <form onSubmit={handleSubmit}>
+                  <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input
+                        class="input is-medium"
+                        type="text"
+                        onChange={(e) => setRef(e.target.value)}
+                      />
+                    </div>
+                    <div class="control">
+                      <button class="button is-info is-medium" type="submit">
+                        <ion-icon name="search-outline"></ion-icon>
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
-            </form>
-            {search && <FindCount data={data} />}
+            </div>
           </div>
+        </section>
+        <div class="container matchlist">
+          {/*search && <FindCount data={data} />*/}
+          {loading && <Load />}
+          {search && <MatchList data={data} />}
+          {!error && <p>{error}</p>}
         </div>
-        {welcome && <ListSiteWeb />}
-      </section>
-      <div class="container">
-        {loading && <Load />}
-        {search && <MatchList data={data} />}
-        {!error && <p>{error}</p>}
-        <Footer />
       </div>
-    </div>
+      <Footer />
+    </React.Fragment>
   );
 }
 
