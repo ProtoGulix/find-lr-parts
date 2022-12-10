@@ -1,12 +1,10 @@
 // React initial
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   BrowserRouter,
   Routes,
   Route,
-  Link,
-  useLocation,
 } from "react-router-dom";
 
 // Elements
@@ -17,7 +15,6 @@ import MatchList from "./MatchList";
 import Hero from "./Hero";
 
 function App() {
-  const data = "data";
   return (
     <BrowserRouter>
       <section class="hero is-link">

@@ -1,12 +1,3 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  useParams,
-  useLocation,
-} from "react-router-dom";
-
 function Banner() {
   return (
     <div class="hero-head">
