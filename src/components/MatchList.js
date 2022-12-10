@@ -1,7 +1,48 @@
+// React Initial
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
+// Elements
 import Match from "./Match";
 import DeviseChange from "./DeviseChange";
+import Load from "./Load";
 
-function MatchList(props) {
+function MatchList() {
+  const search = useLocation().search;
+  const ref = new URLSearchParams(search).get("r");
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  async function LoadData(reference) {
+    fetch(`http://localhost:8000/scrap/?ref=${reference}`)
+      .then((response) => response.json())
+      .then((usefulData) => {
+        setLoading(false);
+        setData(usefulData);
+      })
+      .catch((e) => {
+        setError(e);
+        console.error(`An error occurred: ${e}`);
+      });
+  }
+
+  useEffect(() => {
+    console.log(ref)
+    if (!data && ref) {
+      LoadData(ref);
+    }
+  });
+  return (
+    <div>
+      {!data && <Load />}
+      {data && <List data={data} />}
+    </div>
+  );
+}
+
+function List(props) {
   const list = props.data;
   const thead = (
     <thead>

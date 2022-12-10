@@ -1,4 +1,3 @@
-from numpy import array
 import site_source
 
 from fastapi import FastAPI
@@ -20,8 +19,8 @@ sites_catalogue = {'jc': 'JohnCraddock',
                    }
 
 
-@app.get("/")
-def root(ref: str):
+@app.get("/scrap/")
+async def root(ref: str):
 
     jc = site_source.JohnCraddock(ref)
     data = list(jc)
@@ -42,3 +41,19 @@ def root(ref: str):
             'score': total,
             'site': data
             }
+
+
+@app.get("/change/")
+async def taux():
+    import requests
+
+    reqUrl = "https://query1.finance.yahoo.com/v7/finance/quote?symbols=GBPEUR=X"
+
+    headersList = {
+        'User-agent': 'Mozilla/5.0'
+    }
+
+    response = requests.request(
+        "GET", reqUrl, data="", headers=headersList)
+
+    return response.json()['quoteResponse']['result'][0]['regularMarketPrice'] if response.status_code == 200 else 1
