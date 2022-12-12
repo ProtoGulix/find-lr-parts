@@ -24,23 +24,23 @@ function Match(props) {
   }
 
   return (
-    <tr
-      key={props.index}
-      data-price={price}
-      data-devise={data.devise}
-      data-inc_vat={data.inc_vat}
-    >
-      <th>{data.ref}</th>
-      <td>
+    <tr key={props.index}>
+      <th>
+        <a href={data.link} target="blank">
+          {data.ref}
+        </a>
+      </th>
+      <td
+        class="price"
+        data-price={price}
+        data-devise={data.devise}
+        data-inc_vat={data.inc_vat}
+      >
         {price} {devise}
       </td>
       <td>{data.name}</td>
       <td>{data.manufacturer}</td>
-      <td>
-        <a href={data.link} target="blank">
-          <ion-icon name="link-outline"></ion-icon>
-        </a>
-      </td>
+      
       <td>
         <img
           src={Origine[Source[data.source].origine]}

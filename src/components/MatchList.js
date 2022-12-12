@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 // Elements
 import Match from "./Match";
 import DeviseChange from "./DeviseChange";
+import TaxeChange from "./TaxeChange";
 import Load from "./Load";
 
 function MatchList() {
@@ -16,7 +17,7 @@ function MatchList() {
   const [error, setError] = useState(null);
 
   async function LoadData(reference) {
-    fetch(`http://localhost:8000/scrap/?ref=${reference}`)
+    fetch(`http://localhost:8000/scrap/?ref=${reference}&devise=EUR&taxe=TTC`)
       .then((response) => response.json())
       .then((usefulData) => {
         setLoading(false);
@@ -29,13 +30,13 @@ function MatchList() {
   }
 
   useEffect(() => {
-    console.log(ref)
+    console.log(ref);
     if (!data && ref) {
       LoadData(ref);
     }
   });
   return (
-    <div>
+    <div class="container hero is-fullheight">
       {!data && <Load />}
       {data && <List data={data} />}
     </div>
@@ -52,8 +53,7 @@ function List(props) {
         </th>
         <th>Prix</th>
         <th>Déscription</th>
-        <th>Fabricant</th>
-        <th>Lien</th>
+        <th>Marque</th>
         <th>Origine</th>
       </tr>
     </thead>
@@ -66,7 +66,8 @@ function List(props) {
       <div class="section pt-3">
         <div class="is-vcentered match-commande mb-3" key="0000">
           <button class="button convert is-success mr-2">Trie</button>
-          <DeviseChange />
+          <DeviseChange change={list.change} />
+          <TaxeChange />
         </div>
         <table class="table is-fullwidth is-hoverable">
           {thead}

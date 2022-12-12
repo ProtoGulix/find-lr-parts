@@ -1,9 +1,10 @@
 function Footer() {
   return (
-    <footer class="footer">
+    <footer class="footer mt-auto">
       <div class="content has-text-centered">
         <p>
-          <strong>Réf&Co.</strong> par <a href="https://miladz.eu">Quentin CELLE</a>.
+          <strong>Réf&Co.</strong> par{" "}
+          <a href="https://miladz.eu">Quentin CELLE</a>.
         </p>
       </div>
     </footer>

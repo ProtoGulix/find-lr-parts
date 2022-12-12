@@ -277,7 +277,7 @@ def PaddockSpares(ref):
                     'price': float(valeur.attrs['data-price-amount']),
                     'ref': ref,
                     'devise': 'GBP',
-                    'inc_vat': True,
+                    'inc_vat': False,
                     'image': r['image'],
                     'source': 'ps'}
 
