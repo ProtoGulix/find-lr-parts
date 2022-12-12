@@ -1,13 +1,34 @@
-import React, { useState } from "react";
+// React Initial
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+//Elements
 import { Devise } from "../data/Devise";
 
 function DeviseChange(props) {
   const change = props.change;
   const [convert, setConvert] = useState(false);
-  const [taux] = useState(change.GBPEUR);
+  const [taux, setTaux] = useState(1);
 
-  function Click() {
+  const search = useLocation().search;
+  const dc = new URLSearchParams(search).get("dc");
+
+  function Change(devise) {
     const priceHTML = document.getElementsByClassName("price");
+
+    for (let i = 0; i < priceHTML.length; i++) {
+      const p = priceHTML[i];
+      if (!p.dataset.devise.includes(devise)) {
+        setTaux(change[p.dataset.devise + devise]);
+        console.log(taux);
+      }
+    }
+  }
+
+  function Click(devise) {
+    const priceHTML = document.getElementsByClassName("price");
+
+    Change('EUR');
 
     if (!convert) {
       for (let i = 0; i < priceHTML.length; i++) {
@@ -24,15 +45,21 @@ function DeviseChange(props) {
     }
   }
 
+  useEffect(() => {
+    if (!dc.includes("ALL")) {
+      Change(dc);
+    }
+  });
+
   return (
-    <div class="field has-addons mb-0 mr-2">
-      <p class="control">
-        <buttom class="button convert is-success" onClick={Click}>
+    <div className="field has-addons mb-0 mr-2">
+      <p className="control">
+        <button className="button convert is-success" onClick={Click('EUR')}>
           £ &rarr; €
-        </buttom>
+        </button>
       </p>
-      <p class="control">
-        <buttom class="button is-static">{taux}</buttom>
+      <p className="control">
+        <button className="button is-static">{taux}</button>
       </p>
     </div>
   );

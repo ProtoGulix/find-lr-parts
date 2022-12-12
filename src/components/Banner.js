@@ -1,13 +1,13 @@
 function Banner() {
   return (
-    <div class="hero-head">
-      <div class="container">
-        <nav class="navbar">
+    <div className="hero-head">
+      <div className="container">
+        <nav className="navbar">
           <Brand />
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <a class="button is-white is-outlined">
+          <div className="navbar-end">
+            <div className="navbar-item">
+              <div className="buttons">
+                <a className="button is-white is-outlined" href="http://localhost:3000/">
                   <ion-icon name="heart" size="large"></ion-icon>
                   <strong>Faire un Don</strong>
                 </a>
@@ -22,8 +22,8 @@ function Banner() {
 
 function Brand(){
   return (
-    <div class="navbar-brand">
-      <a class="navbar-item" href="http://localhost:3000">
+    <div className="navbar-brand">
+      <a className="navbar-item" href="http://localhost:3000">
         <ion-icon name="library" size="large"></ion-icon>
         Land Rover Référence
       </a>

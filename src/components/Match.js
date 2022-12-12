@@ -31,7 +31,7 @@ function Match(props) {
         </a>
       </th>
       <td
-        class="price"
+        className="price"
         data-price={price}
         data-devise={data.devise}
         data-inc_vat={data.inc_vat}
@@ -44,7 +44,7 @@ function Match(props) {
       <td>
         <img
           src={Origine[Source[data.source].origine]}
-          class="flag"
+          className="flag"
           alt="flag"
         />
         {Source[data.source].name}

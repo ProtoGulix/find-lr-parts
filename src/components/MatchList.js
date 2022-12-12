@@ -13,30 +13,25 @@ function MatchList() {
   const ref = new URLSearchParams(search).get("r");
 
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   async function LoadData(reference) {
-    fetch(`http://localhost:8000/scrap/?ref=${reference}&devise=EUR&taxe=TTC`)
+    fetch(`http://localhost:8000/scrap/?ref=${reference}`)
       .then((response) => response.json())
       .then((usefulData) => {
-        setLoading(false);
         setData(usefulData);
       })
       .catch((e) => {
-        setError(e);
         console.error(`An error occurred: ${e}`);
       });
   }
 
   useEffect(() => {
-    console.log(ref);
     if (!data && ref) {
       LoadData(ref);
     }
   });
   return (
-    <div class="container hero is-fullheight">
+    <div className="container hero is-fullheight">
       {!data && <Load />}
       {data && <List data={data} />}
     </div>
@@ -46,42 +41,43 @@ function MatchList() {
 function List(props) {
   const list = props.data;
   const thead = (
-    <thead>
-      <tr>
-        <th>
-          <abbr title="Référence">Réf</abbr>
-        </th>
-        <th>Prix</th>
-        <th>Déscription</th>
-        <th>Marque</th>
-        <th>Origine</th>
-      </tr>
-    </thead>
+    <tr>
+      <th>
+        <abbr title="Référence">Réf</abbr>
+      </th>
+      <th>Prix</th>
+      <th>Déscription</th>
+      <th>Marque</th>
+      <th>Origine</th>
+    </tr>
   );
 
   list.site.sort((a, b) => a.price - b.price);
 
   if (list.score > 0) {
     return (
-      <div class="section pt-3">
-        <div class="is-vcentered match-commande mb-3" key="0000">
-          <button class="button convert is-success mr-2">Trie</button>
+      <div className="section pt-3">
+        <div className="is-vcentered match-commande mb-3" key="0000">
+          <button className="button convert is-success mr-2">Trie</button>
           <DeviseChange change={list.change} />
           <TaxeChange />
         </div>
-        <table class="table is-fullwidth is-hoverable">
-          {thead}
-          {list.site.map((data, index) => (
-            <Match data={data} index={index} />
-          ))}
+        <table className="table is-fullwidth is-hoverable">
+          <thead>{thead}</thead>
+
+          <tbody>
+            {list.site.map((data, index) => (
+              <Match data={data} index={index} />
+            ))}
+          </tbody>
         </table>
       </div>
     );
   } else {
     return (
-      <div class="section pt-3">
-        <div class="columns is-mobile">
-          <div class="column is-half is-offset-one-quarter has-text-centered">
+      <div className="section pt-3">
+        <div className="columns is-mobile">
+          <div className="column is-half is-offset-one-quarter has-text-centered">
             <img src="inconnue.jpg" alt="Inconnue" />
           </div>
         </div>

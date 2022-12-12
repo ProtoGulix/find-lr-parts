@@ -1,7 +1,7 @@
 function Footer() {
   return (
-    <footer class="footer mt-auto">
-      <div class="content has-text-centered">
+    <footer className="footer mt-auto">
+      <div className="content has-text-centered">
         <p>
           <strong>Réf&Co.</strong> par{" "}
           <a href="https://miladz.eu">Quentin CELLE</a>.

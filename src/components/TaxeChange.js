@@ -23,9 +23,9 @@ function TaxeChange() {
   }
 
   return (
-    <buttom class="button convert is-success mr-3" onClick={Taxe}>
+    <button className="button convert is-success mr-3" onClick={Taxe}>
       TTC
-    </buttom>
+    </button>
   );
 }
 
