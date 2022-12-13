@@ -34,7 +34,7 @@ function Match(props) {
         className="price"
         data-price={price}
         data-devise={data.devise}
-        data-inc_vat={data.inc_vat}
+        data-incvat={data.inc_vat}
       >
         {price} {devise}
       </td>

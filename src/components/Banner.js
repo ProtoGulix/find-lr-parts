@@ -4,16 +4,6 @@ function Banner() {
       <div className="container">
         <nav className="navbar">
           <Brand />
-          <div className="navbar-end">
-            <div className="navbar-item">
-              <div className="buttons">
-                <a className="button is-white is-outlined" href="http://localhost:3000/">
-                  <ion-icon name="heart" size="large"></ion-icon>
-                  <strong>Faire un Don</strong>
-                </a>
-              </div>
-            </div>
-          </div>
         </nav>
       </div>
     </div>

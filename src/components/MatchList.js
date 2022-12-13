@@ -58,7 +58,6 @@ function List(props) {
     return (
       <div className="section pt-3">
         <div className="is-vcentered match-commande mb-3" key="0000">
-          <button className="button convert is-success mr-2">Trie</button>
           <DeviseChange change={list.change} />
           <TaxeChange />
         </div>
