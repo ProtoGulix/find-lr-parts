@@ -3,64 +3,74 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 //Elements
-import { Devise } from "../data/Devise";
+import { Devise, optionDevise } from "../data/Devise";
 
 function DeviseChange(props) {
   const change = props.change;
-  const [convert, setConvert] = useState(false);
-  const [taux, setTaux] = useState(1);
+  const [devise, setDevise] = useState(optionDevise[0].value);
 
   const search = useLocation().search;
   const dc = new URLSearchParams(search).get("dc");
 
-  function Change(devise) {
-    const priceHTML = document.getElementsByClassName("price");
+  useEffect(() => {
+    Change(dc);
+  });
+
+  function DeviseChange(event) {
+    var d = event.target.value;
+    setDevise(d);
+    Change(d);
+  }
+
+  async function Change(devise) {
+    let priceHTML = document.getElementsByClassName("price");
 
     for (let i = 0; i < priceHTML.length; i++) {
       const p = priceHTML[i];
-      if (!p.dataset.devise.includes(devise)) {
-        setTaux(change[p.dataset.devise + devise]);
-        console.log(taux);
+      const price = p.dataset.price;
+
+      if (!Object.is(devise, p.dataset.devise)) {
+        console.log(devise + p.dataset.devise);
+
+        p.innerHTML =
+          (price * change[p.dataset.devise + devise]).toFixed(2) +
+          Devise[devise];
+      } else {
+        p.innerHTML = price + Devise[devise];
       }
     }
   }
 
-  function Click(devise) {
-    const priceHTML = document.getElementsByClassName("price");
-
-    Change('EUR');
-
-    if (!convert) {
-      for (let i = 0; i < priceHTML.length; i++) {
-        const p = priceHTML[i];
-        const dev = p.dataset.devise;
-        const price = p.dataset.price;
-        if (dev.includes("GBP")) {
-          p.dataset.price = (price * taux).toFixed(2);
-          p.dataset.devise = "EUR";
-          setConvert(true);
-          p.innerHTML = p.dataset.price + " " + Devise[p.dataset.devise];
-        }
-      }
-    }
-  }
-
-  useEffect(() => {
+  function ButtonTaux() {
     if (!dc.includes("ALL")) {
-      Change(dc);
+      return (
+        <p className="control">
+          <button className="button is-static">1 {Devise[devise]}</button>
+        </p>
+      );
     }
-  });
+  }
+
+  function ButtonDevise() {
+    return (
+      <p className="control">
+        <span className="select is-normal">
+          <select className="is-success" value={devise} onChange={DeviseChange}>
+            {optionDevise.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.text}
+              </option>
+            ))}
+          </select>
+        </span>
+      </p>
+    );
+  }
 
   return (
     <div className="field has-addons mb-0 mr-2">
-      <p className="control">
-        <button className="button convert is-success" onClick={Click('EUR')}>
-          £ &rarr; €
-        </button>
-      </p>
-      <p className="control">
-        <button className="button is-static">{taux}</button>
-      </p>
+      <ButtonDevise />
+      <ButtonTaux />
     </div>
   );
 }

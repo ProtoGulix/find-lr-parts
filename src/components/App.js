@@ -9,6 +9,7 @@ import Banner from "./Banner";
 import Footer from "./Footer";
 import MatchList from "./MatchList";
 import Hero from "./Hero";
+import { optionDevise } from "../data/Devise";
 
 function App() {
   return (
@@ -60,10 +61,12 @@ function SearchForm() {
         </p>
         <p className="control">
           <span className="select is-small">
-            <select name="dc">
-                <option value="ALL">Toute</option>
-              <option value="EUR">€</option>
-              <option value="GBP">£</option>
+            <select className="is-success is-small" name="dc">
+              {optionDevise.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.text}
+                </option>
+              ))}
             </select>
           </span>
         </p>
