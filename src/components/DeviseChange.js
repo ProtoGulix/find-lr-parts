@@ -1,38 +1,54 @@
-import React, { useState } from "react";
-import { Devise } from "../data/Devise";
+// React Initial
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+//Elements
+import { Devise, optionDevise } from "../data/Devise";
 
 function DeviseChange(props) {
   const change = props.change;
-  const [convert, setConvert] = useState(false);
-  const [taux] = useState(change.GBPEUR);
+  const search = useLocation().search;
+  const [devise, setDevise] = useState(new URLSearchParams(search).get("dc"));
 
-  function Click() {
-    const priceHTML = document.getElementsByClassName("price");
+  useEffect(() => {
+    Change(devise);
+  }, []);
 
-    if (!convert) {
-      for (let i = 0; i < priceHTML.length; i++) {
-        const p = priceHTML[i];
-        const dev = p.dataset.devise;
-        const price = p.dataset.price;
-        if (dev.includes("GBP")) {
-          p.dataset.price = (price * taux).toFixed(2);
-          p.dataset.devise = "EUR";
-          setConvert(true);
-          p.innerHTML = p.dataset.price + " " + Devise[p.dataset.devise];
-        }
+  function DeviseChange(event) {
+    var d = event.target.value;
+    setDevise(d);
+    Change(d);
+  }
+
+  function Change(devise) {
+    let priceHTML = document.getElementsByClassName("price");
+
+    for (let i = 0; i < priceHTML.length; i++) {
+      const p = priceHTML[i];
+      const price = p.dataset.price;
+
+      if (!Object.is(devise, p.dataset.devise)) {
+        p.innerHTML =
+          (price * change[p.dataset.devise + devise]).toFixed(2) +
+          Devise[devise];
+      } else {
+        p.innerHTML = price + Devise[devise];
       }
     }
   }
 
   return (
-    <div class="field has-addons mb-0 mr-2">
-      <p class="control">
-        <buttom class="button convert is-success" onClick={Click}>
-          £ &rarr; €
-        </buttom>
-      </p>
-      <p class="control">
-        <buttom class="button is-static">{taux}</buttom>
+    <div className="field mb-0 mr-2">
+      <p className="control">
+        <span className="select is-normal">
+          <select className="is-success" value={devise} onChange={DeviseChange}>
+            {optionDevise.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.text}
+              </option>
+            ))}
+          </select>
+        </span>
       </p>
     </div>
   );

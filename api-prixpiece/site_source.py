@@ -1,5 +1,4 @@
-
-from xml.dom import ValidationErr
+from requests.exceptions import HTTPError
 
 
 def JohnCraddock(ref):
@@ -86,36 +85,36 @@ def SeriesForever(ref):
 
     data = f"query={ref}&action=get_suggestions"
 
-    resp = requests.post(url, headers=headers, data=data)
+    try:
+        resp = requests.post(url, headers=headers, data=data)
 
-    if resp.status_code == 200:
+        if resp.status_code == 200:
 
-        r = resp.content.decode('UTF-8')
+            r = resp.content.decode('UTF-8')
 
-        soup = BeautifulSoup(r, "html.parser")
-        find = []
-        for link in soup.findAll('a'):
+            soup = BeautifulSoup(r, "html.parser")
+            find = []
+            for link in soup.findAll('a'):
 
-            if link.get('href') != '#' and GetValue(str(link), 'reference') == ref:
-                out = {}
+                if link.get('href') != '#' and GetValue(str(link), 'reference') == ref:
+                    out = {}
 
-                price = GetValue(str(link), 'price')[:-2]
+                    price = GetValue(str(link), 'price')[:-2]
 
-                out['price'] = float(price.replace(',', '.'))
-                out['name'] = GetValue(str(link), 'name')
-                out['ref'] = GetValue(str(link), 'reference')
-                out['link'] = link.get('href')
-                out['devise'] = 'EUR'
-                out['inc_vat'] = True
-                out['manufacturer'] = GetValue(str(link), 'manufacturer')
-                out['source'] = 'sf'
+                    out['price'] = float(price.replace(',', '.'))
+                    out['name'] = GetValue(str(link), 'name')
+                    out['ref'] = GetValue(str(link), 'reference')
+                    out['link'] = link.get('href')
+                    out['devise'] = 'EUR'
+                    out['inc_vat'] = True
+                    out['manufacturer'] = GetValue(str(link), 'manufacturer')
+                    out['source'] = 'sf'
 
-                find.append(out)
+                    find.append(out)
 
-        return find
-
-    else:
-        print('Une erreur c\'est produit !!')
+            return find
+    except HTTPError:
+        print('Site inaxecesible')
 
 
 def LRParts(ref):

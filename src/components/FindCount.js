@@ -3,7 +3,7 @@ function FindCount(props) {
 
   if (list.score > 0) {
     return (
-      <div class="section">
+      <div className="section">
         <b>{list.score}</b> match(s) trouvé pour la référence <b>{list.ref}</b>
       </div>
     );
