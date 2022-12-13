@@ -1,9 +1,9 @@
 function Load() {
   return (
-    <div class="section">
+    <div className="section">
       <center>
-        <div class="title">Chargement en cours ...</div>
-        <div class="loader"></div>
+        <div className="title">Chargement en cours ...</div>
+        <div className="loader"></div>
       </center>
     </div>
   );
