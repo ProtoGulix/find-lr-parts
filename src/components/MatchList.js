@@ -15,7 +15,7 @@ function MatchList() {
   const [data, setData] = useState(null);
 
   async function LoadData(reference) {
-    fetch(`http://localhost:8000/scrap/?ref=${reference}`)
+    fetch(`http://localhost:8000/api?ref=${reference}`)
       .then((response) => response.json())
       .then((usefulData) => {
         setData(usefulData);
@@ -59,7 +59,6 @@ function List(props) {
       <div className="section pt-3">
         <div className="is-vcentered match-commande mb-3" key="0000">
           <DeviseChange change={list.change} />
-          <TaxeChange />
         </div>
         <table className="table is-fullwidth is-hoverable">
           <thead>{thead}</thead>

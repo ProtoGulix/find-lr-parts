@@ -16,8 +16,6 @@ def JohnCraddock(ref):
         find[i]['manufacturer'] = spare['brand']
         find[i]['source'] = 'jc'
 
-    print('Connexion à JohnCraddock Ltd ...')
-
     site = 'https://www.johncraddockltd.co.uk'
     url = f"{site}/_api/search.php?q={ref}"
 
@@ -62,8 +60,6 @@ def SeriesForever(ref):
     from requests.structures import CaseInsensitiveDict
     from bs4 import BeautifulSoup
     import re
-
-    print('Connexion à SeriesForever ...')
 
     def GetValue(html, value):
         from bs4 import BeautifulSoup
@@ -121,8 +117,6 @@ def LRParts(ref):
     import requests
     import json
 
-    print('Connexion à LR Parts ...')
-
     payload = json.dumps({
         'template': 'live-search',
         'query': ref,
@@ -159,8 +153,6 @@ def LRParts(ref):
 def LandService(ref):
     import requests
 
-    print('Connexion à Land Service ...')
-
     reqUrl = "https://www.land-service.com/fr/recherche"
 
     payload = {'s': ref, 'resultsPerPage': '10', 'ajax': 'true'}
@@ -191,8 +183,6 @@ def LandService(ref):
 
 def BestOfLand(ref):
     import requests
-
-    print('Connexion à Best Of Land ...')
 
     reqUrl = f"https://eu1-search.doofinder.com/5/search?hashid=090701841bea429cd906143b5bf7d800&query={ref}"
 

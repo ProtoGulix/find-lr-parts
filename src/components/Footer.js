@@ -3,8 +3,8 @@ function Footer() {
     <footer className="footer mt-auto">
       <div className="content has-text-centered">
         <p>
-          <strong>Réf&Co.</strong> par{" "}
-          <a href="https://miladz.eu">Quentin CELLE</a>.
+          <strong>Réf&Co.</strong> un site de {" "}
+          <a href="https://miladz.eu">MILADZ!EU</a>.
         </p>
       </div>
     </footer>

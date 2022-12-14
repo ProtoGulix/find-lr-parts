@@ -11,7 +11,12 @@ function Match(props) {
     if (data.price == null) {
       return null;
     } else {
-      return data.price.toFixed(2);
+      if (data.inc_vat) {
+        return data.price.toFixed(2);
+      } else {
+        data.inc_vat = true;
+        return (data.price * 1.2).toFixed(2);
+      }
     }
   }
 
@@ -40,7 +45,7 @@ function Match(props) {
       </td>
       <td>{data.name}</td>
       <td>{data.manufacturer}</td>
-      
+
       <td>
         <img
           src={Origine[Source[data.source].origine]}

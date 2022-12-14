@@ -1,6 +1,4 @@
 // React initial
-
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Elements
@@ -9,16 +7,14 @@ import Banner from "./Banner";
 import Footer from "./Footer";
 import MatchList from "./MatchList";
 import Hero from "./Hero";
-import { optionDevise } from "../data/Devise";
+import { SearchForm } from "./Search";
 
 function App() {
   return (
     <BrowserRouter>
-      <section className="hero is-link">
-        <Banner />
-      </section>
+      <Banner />
       <Routes>
-        <Route path="/" element={<SearchSection />}></Route>
+        <Route path="/" element={<SearchSection />} />
         <Route path="/search" element={<MatchList />} />
       </Routes>
       <Footer />
@@ -28,50 +24,35 @@ function App() {
 
 function SearchSection() {
   return (
-    <section className="hero is-link">
-      <Hero />
+    <section className="hero">
+      <div className="hero-head has-text-centered mt-3">
+        <Hero />
+        <div className="columns mt-3">
+          <div className="column is-half is-offset-one-quarter">
+            <SearchForm />
+          </div>
+        </div>
+      </div>
+
       <div className="hero-body container">
-        <SearchForm />
+        <div className="columns">
+          <div className="column is-half is-offset-one-quarter">
+            <article class="message is-light">
+              <div class="message-header">
+                <p>C'est quoi ?</p>
+              </div>
+              <div class="message-body">
+                Ce moteur de cherche vous aide trouvé le meilleur prix pour vos
+                pièces de Land-Rover. <strong>Comment ?</strong> Il vous suffit
+                d'une référence, la recherche ce fait automatiquement sur une
+                large sélection de distributeur.
+                <br />
+              </div>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
-  );
-}
-
-function SearchForm() {
-  return (
-    <form action="/search" method="get">
-      <div className="field has-addons">
-        <div className="control is-expanded">
-          <input className="input is-medium" type="text" id="fref" name="r" />
-        </div>
-        <div className="control">
-          <button className="button is-info is-medium" type="submit">
-            <ion-icon name="search-outline"></ion-icon>
-          </button>
-        </div>
-      </div>
-      <div className="field has-addons">
-        <p className="control ">
-          <span className="select is-small">
-            <select name="vat">
-              <option value="false">HT</option>
-              <option value="true">TTC</option>
-            </select>
-          </span>
-        </p>
-        <p className="control">
-          <span className="select is-small">
-            <select className="is-success is-small" name="dc">
-              {optionDevise.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.text}
-                </option>
-              ))}
-            </select>
-          </span>
-        </p>
-      </div>
-    </form>
   );
 }
 

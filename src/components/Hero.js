@@ -1,13 +1,12 @@
 function Hero() {
-  const title = "Enfin la solution pour piéces de Land Rover !";
-  const subtitle = "Un seul endroit pour trouvé le meilleur prix.";
+  const title = "Le meilleur prix en quelques Clic !";
+  const subtitle = "Entrez simple une référence d'orgine ...";
   return (
-    <section className="hero">
-      <div className="hero-body has-text-centered">
-        <p className="title">{title}</p>
-        <p className="subtitle">{subtitle}</p>
-      </div>
-    </section>
+    <div>
+      <img src="undraw_lost_re_xqjt.svg" alt="lost" width="300px" />
+      <p className="title">{title}</p>
+      <p className="subtitle">{subtitle}</p>
+    </div>
   );
 }
 

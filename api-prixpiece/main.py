@@ -7,7 +7,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000']
+    allow_origins=['http://localhost:3000', 'https://refco.miladz.eu']
 )
 
 sites_catalogue = {'jc': 'JohnCraddock',
@@ -34,26 +34,25 @@ def Change(devise):
     return response.json()['quoteResponse']['result'][0]['regularMarketPrice'] if response.status_code == 200 else 1
 
 
-@app.get("/scrap/")
+@app.get("/api")
 async def root(ref: str):
 
     change = {'EURGBP': Change('EURGBP')}
     change['GBPEUR'] = Change('GBPEUR')
 
-    jc = site_source.JohnCraddock(ref)
-    data = list(jc)
-    sf = site_source.SeriesForever(ref)
-    data.extend(iter(sf))
-    lp = site_source.LRParts(ref)
-    data.extend(iter(lp))
-    ls = site_source.LandService(ref)
-    data.extend(iter(ls))
-    bol = site_source.BestOfLand(ref)
-    data.extend(iter(bol))
-    pad = site_source.PaddockSpares(ref)
-    data.extend(iter(pad))
+    site_enable = ['jc', 'sf', 'lp', 'ls', 'bol', 'pad']
+
+    data = []
+
+    for key, val in sites_catalogue.items():
+        if (key in site_enable):
+
+            func = f'site_source.{val}'
+            data.extend(iter(eval(f'{func}(ref)')))
 
     total = len(data)
+
+    print(f'Ref => {ref} ({total} resultat)')
 
     return {'ref': f'{ref}',
             'score': total,
