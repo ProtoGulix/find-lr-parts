@@ -15,7 +15,19 @@ function MatchList() {
   const [data, setData] = useState(null);
 
   async function LoadData(reference) {
-    fetch(`http://localhost:8000/api?ref=${reference}`)
+    let bodyContent = JSON.stringify({
+      ref: reference,
+      sites: ["jc", "sf", "lp", "ls", "bol", "pad"],
+    });
+
+    fetch("http://localhost:8000/api", {
+      method: "POST",
+      headers: {
+        "Accept": "*/*",
+        "Content-Type": "application/json",
+      },
+      body: bodyContent,
+    })
       .then((response) => response.json())
       .then((usefulData) => {
         setData(usefulData);

@@ -1,13 +1,16 @@
 import site_source
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000', 'https://refco.miladz.eu']
+    allow_origins=['http://localhost:3000', 'https://refco.miladz.eu'],
+    allow_credentials=True,
+    allow_methods=["POST"],
+    allow_headers=["*"],
 )
 
 sites_catalogue = {'jc': 'JohnCraddock',
@@ -34,27 +37,27 @@ def Change(devise):
     return response.json()['quoteResponse']['result'][0]['regularMarketPrice'] if response.status_code == 200 else 1
 
 
-@app.get("/api")
-async def root(ref: str):
+@app.post("/api")
+async def root(info: Request):
+
+    request = await info.json()
 
     change = {'EURGBP': Change('EURGBP')}
     change['GBPEUR'] = Change('GBPEUR')
 
-    site_enable = ['jc', 'sf', 'lp', 'ls', 'bol', 'pad']
-
     data = []
 
     for key, val in sites_catalogue.items():
-        if (key in site_enable):
+        if (key in request['sites']):
 
             func = f'site_source.{val}'
-            data.extend(iter(eval(f'{func}(ref)')))
+            data.extend(iter(eval(f'{func}(request["ref"])')))
 
     total = len(data)
 
-    print(f'Ref => {ref} ({total} resultat)')
+    print(f"Ref => {request['ref']} ({total} resultat)")
 
-    return {'ref': f'{ref}',
+    return {'ref': f"{request['ref']}",
             'score': total,
             'change':  change,
             'site': data
