@@ -201,7 +201,7 @@ def BestOfLand(ref):
             for r in r['results']:
                 out = {
                     'link': r['link'],
-                    'price': r['price'],
+                    'price': float(r['price']),
                     'name': r['title'],
                     'ref': str(r['mpn']),
                     'devise': 'EUR',
@@ -230,7 +230,7 @@ def RoverParts(ref):
         "requests": [
             {
                 "indexName": "roverTaxonomy",
-                "params": "query=551174&hitsPerPage=10&facetFilters=%5B%22%22%5D"
+                "params": f"query={ref}"
             }
         ]
     })
@@ -238,7 +238,28 @@ def RoverParts(ref):
     response = requests.request(
         "POST", reqUrl, data=payload,  headers=headersList)
 
-    print(response.text)
+    if response.status_code == 200:
+
+        resp = response.json()
+
+        find = []
+
+        for r in resp['results'][0]['hits']:
+            if ref == r['WEBNO'][:len(ref)]:
+                out = {
+                    'link': f"https://www.roverparts.com{r['PARTURL']}",
+                    'price': float(r['PRICE']),
+                    'name': r['DESCRIPTION'],
+                    'ref': r['PRODUCT_ID'],
+                    'devise': 'GBP',
+                    'inc_vat': False,
+                    'manufacturer': r['MFR'],
+                    'source': 'rp'}
+
+                find.append(out)
+
+    return(find)
+
 
 
 def PaddockSpares(ref):

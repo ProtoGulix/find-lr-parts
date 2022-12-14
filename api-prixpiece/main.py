@@ -3,6 +3,9 @@ import site_source
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+import time
+import concurrent.futures
+
 app = FastAPI()
 
 app.add_middleware(
@@ -13,13 +16,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-sites_catalogue = {'jc': 'JohnCraddock',
-                   'sf': 'SeriesForever',
-                   'lp': 'LRParts',
-                   'ls': 'LandService',
-                   'bol': 'BestOfLand',
-                   'pad': 'PaddockSpares'
-                   }
+scrap_methods = {'jc': 'JohnCraddock',
+                 'sf': 'SeriesForever',
+                 'lp': 'LRParts',
+                 'ls': 'LandService',
+                 'bol': 'BestOfLand',
+                 'pad': 'PaddockSpares',
+                 'rp': 'RoverParts'
+                 }
 
 
 def Change(devise):
@@ -37,28 +41,49 @@ def Change(devise):
     return response.json()['quoteResponse']['result'][0]['regularMarketPrice'] if response.status_code == 200 else 1
 
 
+def get_scrap_function(scrap_function, ref, timeout=10):
+    # eval(f'{func}(request["ref"])')
+    func = f'site_source.{scrap_function}'
+    return eval(f'{func}(ref)')
+
+
+def get_scrap_data(reference, sites):
+    data = []
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = []
+        for id, name in scrap_methods.items():
+            if (id in sites):
+                futures.append(executor.submit(
+                    get_scrap_function, scrap_function=name, ref=reference))
+        for future in concurrent.futures.as_completed(futures):
+            data.extend(future.result())
+
+    return data
+
+
 @app.post("/api")
 async def root(info: Request):
+    # Start
+    start = time.perf_counter()
 
     request = await info.json()
 
     change = {'EURGBP': Change('EURGBP')}
     change['GBPEUR'] = Change('GBPEUR')
 
-    data = []
+    data = get_scrap_data(reference=request['ref'], sites=request['sites'])
 
-    for key, val in sites_catalogue.items():
-        if (key in request['sites']):
-
-            func = f'site_source.{val}'
-            data.extend(iter(eval(f'{func}(request["ref"])')))
-
+    finish = time.perf_counter()
+    timescore = round(finish-start, 2)
     total = len(data)
 
-    print(f"Ref => {request['ref']} ({total} resultat)")
+    print(
+        f"Ref => {request['ref']} ({total} resultat) - {timescore} sec")
 
-    return {'ref': f"{request['ref']}",
+    return {'ref': request['ref'],
             'score': total,
             'change':  change,
+            'time': timescore,
             'site': data
             }
