@@ -1,11 +1,5 @@
 import requests
-from requests.exceptions import HTTPError
+import concurrent.futures
+import site_source
 
-urlString = 'https://seriesforever.com/'
-try:
-    r = requests.get(urlString)
-    r.raise_for_status()
-except HTTPError:
-    print("La page n'existe pas.")
-else:
-    print(f'{urlString} existe!')
+print(site_source.RimmerBros('ERR6066'))

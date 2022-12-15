@@ -36,7 +36,7 @@ function Match(props) {
         </a>
       </th>
       <td
-        className="price"
+        className="price is-danger"
         data-price={price}
         data-devise={data.devise}
         data-incvat={data.inc_vat}

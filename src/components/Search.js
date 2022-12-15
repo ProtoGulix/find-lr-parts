@@ -35,16 +35,66 @@ export function SearchForm() {
 }
 
 export function SearchSimple() {
+  // DROPDOWN
+  document.addEventListener("DOMContentLoaded", function () {
+    var dropdown = document.querySelector(".dropdown");
+    dropdown.addEventListener("click", function (event) {
+      event.stopPropagation();
+      dropdown.classList.toggle("is-active");
+    });
+  });
+
   return (
     <form action="/search" method="get">
-      <div className="field has-addons">
-        <div className="control">
-          <input className="input is-small" type="text" id="fref" name="r" />
+      <div className="field is-horizontal mt-2 mb-0">
+        <div className="field-label is-normal">
+          <label className="label">Recherche</label>
         </div>
-        <div className="control">
-          <button className="button is-info is-small" type="submit">
-            <ion-icon name="search-outline"></ion-icon>
-          </button>
+        <div className="field-body">
+          <div className="field has-addons">
+            <div className="control">
+              <input
+                className="input"
+                type="text"
+                id="fref"
+                name="r"
+                size="30"
+              />
+            </div>
+            <div className="control">
+              <button className="button is-info" type="submit">
+                <ion-icon name="search-outline"></ion-icon>
+              </button>
+            </div>
+            <div className="control dropdown is-right">
+              <div className="dropdown-trigger">
+                <a
+                  className="button"
+                  aria-haspopup="true"
+                  aria-controls="dropdown-menu"
+                >
+                  <ion-icon name="settings-sharp"></ion-icon>
+                  <span className="icon is-small is-link">
+                    <ion-icon name="chevron-down-outline"></ion-icon>
+                  </span>
+                </a>
+              </div>
+              <div className="dropdown-menu" id="dropdown-menu3" role="menu">
+                <div className="dropdown-content">
+                  <a href="/" className="dropdown-item">
+                    Overview
+                  </a>
+                  <a href="/" className="dropdown-item">
+                    Layout
+                  </a>
+                  <hr className="dropdown-divider" />
+                  <a href="/" className="dropdown-item">
+                    More
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <input type="hidden" name="dc" value="EUR" />

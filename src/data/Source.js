@@ -29,6 +29,11 @@ export const Source = {
     link: "https://www.johncraddockltd.co.uk/",
     origine: "FR",
   },
+  rp: {
+    name: "Rover Parts",
+    link: "https://www.roverparts.com/",
+    origine: "UK",
+  },
 };
 
 export const Origine = {

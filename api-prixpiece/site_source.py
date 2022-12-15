@@ -1,3 +1,4 @@
+import json
 from requests.exceptions import HTTPError
 
 
@@ -261,7 +262,6 @@ def RoverParts(ref):
     return(find)
 
 
-
 def PaddockSpares(ref):
     import requests
     from bs4 import BeautifulSoup
@@ -294,3 +294,47 @@ def PaddockSpares(ref):
                 find.append(out)
 
     return find
+
+
+def RimmerBros(ref):
+    import requests
+
+
+    reqUrl = "https://rimmerbros.com/MCWebServices/SearchAutoCompleteService.asmx/GetSearchSuggestions"
+
+    headersList = {
+        "Content-Type": "application/json"
+    }
+
+    payload = json.dumps({"value": f"{ref}", "isMobile": "false"})
+
+    response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
+
+    if response.status_code == 200:
+
+        find = []
+        
+        for r in response.json()['d']['ProductSuggestion']:
+            if ref == r['ItemNo'][:len(ref)]:
+                out = {
+                    'link': f"https://rimmerbros.com/{r['Url']}",
+                    'price': r['WebPrice'],
+                    'name': r['Text'],
+                    'ref': r['ItemNo'],
+                    'devise': 'GBP',
+                    'inc_vat': False,
+                    'image': f"http:{r['Image'][1:-1]}",
+                    'source': 'rb'}
+
+                find.append(out)
+
+    return find
+    
+def BritishParts(ref):
+    import requests
+
+    reqUrl = f"https://www.britishparts.co.uk/autocomplete/search/json?q={ref}"
+
+    response = requests.request("POST", reqUrl)
+
+    print(response.text)

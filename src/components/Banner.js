@@ -1,18 +1,19 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import { SearchSimple, SearchForm } from "./Search";
 
 function Banner() {
   return (
-    <section class="hero">
+    <section className="hero">
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="container">
           <Brand />
 
           <div className="navbar-menu" id="navbarBasicExample">
             <div className="navbar-start">
-              <a className="navbar-item">Home</a>
-              <a className="navbar-item">Documentation</a>
+              <a className="navbar-item" href="/">
+                Documentation
+              </a>
             </div>
 
             <div className="navbar-end">
@@ -30,6 +31,16 @@ function Banner() {
 }
 
 function Brand() {
+  // burger
+  document.addEventListener("DOMContentLoaded", function () {
+    var burger = document.querySelector(".navbar-burger");
+    const nav = document.getElementById("navbarBasicExample");
+    burger.addEventListener("click", function (event) {
+      event.stopPropagation();
+      nav.classList.add("is-active");
+    });
+  });
+
   return (
     <div className="navbar-brand">
       <a className="navbar-item" href="https://refco.miladz.eu">
@@ -43,7 +54,7 @@ function Brand() {
         className="navbar-burger"
         aria-label="menu"
         aria-expanded="false"
-        data-target="nnavbarBasicExample"
+        data-target="navbarBasicExample"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>

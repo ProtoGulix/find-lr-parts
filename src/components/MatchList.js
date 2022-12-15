@@ -1,5 +1,5 @@
 // React Initial
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 // Elements
@@ -7,23 +7,26 @@ import Match from "./Match";
 import DeviseChange from "./DeviseChange";
 import TaxeChange from "./TaxeChange";
 import Load from "./Load";
+import Error from "./Error";
 
 function MatchList() {
   const search = useLocation().search;
   const ref = new URLSearchParams(search).get("r");
 
   const [data, setData] = useState(null);
+  const [error, setError] = useState(true);
 
+  // Call API
   async function LoadData(reference) {
     let bodyContent = JSON.stringify({
       ref: reference,
-      sites: ["jc", "sf", "lp", "ls", "bol", "pad"],
+      sites: ["jc", "sf", "lp", "ls", "bol", "pad", "rp"],
     });
 
-    fetch("http://localhost:8000/api", {
+    fetch("https://refco.miladz.eu/api", {
       method: "POST",
       headers: {
-        "Accept": "*/*",
+        Accept: "*/*",
         "Content-Type": "application/json",
       },
       body: bodyContent,
@@ -38,16 +41,22 @@ function MatchList() {
   }
 
   useEffect(() => {
-    if (!data && ref) {
+    if (!data && ref !== "") {
+      setError(false);
       LoadData(ref);
     }
-  });
-  return (
-    <div className="container hero is-fullheight">
-      {!data && <Load />}
-      {data && <List data={data} />}
-    </div>
-  );
+  }, [ref, data]);
+
+  if (!error) {
+    return (
+      <div>
+        {!data && <Load />}
+        {data && <List data={data} />}
+      </div>
+    );
+  } else {
+    return <Error />;
+  }
 }
 
 function List(props) {
@@ -57,7 +66,7 @@ function List(props) {
       <th>
         <abbr title="Référence">Réf</abbr>
       </th>
-      <th>Prix</th>
+      <th className="is-danger">Prix</th>
       <th>Déscription</th>
       <th>Marque</th>
       <th>Origine</th>
@@ -68,30 +77,26 @@ function List(props) {
 
   if (list.score > 0) {
     return (
-      <div className="section pt-3">
-        <div className="is-vcentered match-commande mb-3" key="0000">
-          <DeviseChange change={list.change} />
-        </div>
-        <table className="table is-fullwidth is-hoverable">
-          <thead>{thead}</thead>
+      <div className="container hero is-fullheight">
+        <div className="section pt-3">
+          <div className="is-vcentered match-commande mb-3" key="0000">
+            <DeviseChange change={list.change} />
+          </div>
+          <table className="table is-fullwidth is-hoverable">
+            <thead>{thead}</thead>
 
-          <tbody>
-            {list.site.map((data, index) => (
-              <Match data={data} index={index} />
-            ))}
-          </tbody>
-        </table>
+            <tbody>
+              {list.site.map((data, index) => (
+                <Match data={data} index={index} />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   } else {
     return (
-      <div className="section pt-3">
-        <div className="columns is-mobile">
-          <div className="column is-half is-offset-one-quarter has-text-centered">
-            <img src="inconnue.jpg" alt="Inconnue" />
-          </div>
-        </div>
-      </div>
+      <Error/>
     );
   }
 }
