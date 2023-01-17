@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import { SearchSimple, SearchForm } from "./Search";
+import { SearchSimple } from "./Search";
 
 function Banner() {
   return (
@@ -31,15 +31,7 @@ function Banner() {
 }
 
 function Brand() {
-  // burger
-  document.addEventListener("DOMContentLoaded", function () {
-    var burger = document.querySelector(".navbar-burger");
-    const nav = document.getElementById("navbarBasicExample");
-    burger.addEventListener("click", function (event) {
-      event.stopPropagation();
-      nav.classList.add("is-active");
-    });
-  });
+
 
   return (
     <div className="navbar-brand">

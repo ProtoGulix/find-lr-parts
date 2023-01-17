@@ -129,11 +129,11 @@ def LRParts(ref):
     response = requests.request(
         "GET", reqUrl)
 
+    find = []
+
     if response.status_code == 200:
 
         r = response.json()
-
-        find = []
 
         for r in r['product_data']:
             out = {
@@ -154,30 +154,34 @@ def LRParts(ref):
 def LandService(ref):
     import requests
 
-    reqUrl = "https://www.land-service.com/fr/recherche"
+    reqUrl = f"https://eu1-search.doofinder.com/5/search?hashid=e517b3b916cd126250a46db6e9696c5f&query={ref}"
 
-    payload = {'s': ref, 'resultsPerPage': '10', 'ajax': 'true'}
+    headersList = {
+        "Origin": "https://www.land-service.com"
+    }
 
-    response = requests.request("POST", reqUrl, data=payload)
+    response = requests.request("GET", reqUrl,  headers=headersList)
+
+    find = []
 
     if response.status_code == 200:
+
         r = response.json()
 
-        find = []
+        if r['query_name'] == 'match_and':
+            for r in r['results']:
+                out = {
+                    'link': r['link'],
+                    'price': float(r['price']),
+                    'name': r['title'],
+                    'ref': str(r['mpn']),
+                    'devise': 'EUR',
+                    'inc_vat': True,
+                    'image': r['image_link'],
+                    'manufacturer': r['brand'],
+                    'source': 'ls'}
 
-        for r in r['products']:
-            out = {
-                'link': r['link'],
-                'price': float(r['price_amount']),
-                'name': r['name'],
-                'ref': str(r['reference']),
-                'devise': 'EUR',
-                'inc_vat': True,
-                'image': r['cover']['medium']['url'],
-                'manufacturer': r['manufacturer_name'],
-                'source': 'ls'}
-
-            find.append(out)
+                find.append(out)
 
     return find
 
@@ -193,10 +197,10 @@ def BestOfLand(ref):
 
     response = requests.request("GET", reqUrl,  headers=headersList)
 
+    find = []
+
     if response.status_code == 200:
         r = response.json()
-
-        find = []
 
         if r['query_name'] == 'match_and':
             for r in r['results']:
@@ -299,7 +303,6 @@ def PaddockSpares(ref):
 def RimmerBros(ref):
     import requests
 
-
     reqUrl = "https://rimmerbros.com/MCWebServices/SearchAutoCompleteService.asmx/GetSearchSuggestions"
 
     headersList = {
@@ -308,12 +311,13 @@ def RimmerBros(ref):
 
     payload = json.dumps({"value": f"{ref}", "isMobile": "false"})
 
-    response = requests.request("POST", reqUrl, data=payload,  headers=headersList)
+    response = requests.request(
+        "POST", reqUrl, data=payload,  headers=headersList)
 
     if response.status_code == 200:
 
         find = []
-        
+
         for r in response.json()['d']['ProductSuggestion']:
             if ref == r['ItemNo'][:len(ref)]:
                 out = {
@@ -329,7 +333,8 @@ def RimmerBros(ref):
                 find.append(out)
 
     return find
-    
+
+
 def BritishParts(ref):
     import requests
 

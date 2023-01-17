@@ -38,11 +38,11 @@ function SearchSection() {
       <div className="hero-body container">
         <div className="columns">
           <div className="column is-half is-offset-one-quarter">
-            <article class="message is-light">
-              <div class="message-header">
+            <article className="message is-light">
+              <div className="message-header">
                 <p>C'est quoi ?</p>
               </div>
-              <div class="message-body">
+              <div className="message-body">
                 Ce moteur de cherche vous aide trouvé le meilleur prix pour vos
                 pièces de Land-Rover. <strong>Comment ?</strong> Il vous suffit
                 d'une référence, la recherche ce fait automatiquement sur une

@@ -2,4 +2,4 @@ import requests
 import concurrent.futures
 import site_source
 
-print(site_source.RimmerBros('ERR6066'))
+print(site_source.LandService('ERR6066'))

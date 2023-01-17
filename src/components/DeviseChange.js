@@ -12,7 +12,7 @@ function DeviseChange(props) {
 
   useEffect(() => {
     Change(devise);
-  }, []);
+  });
 
   function DeviseChange(event) {
     var d = event.target.value;

@@ -10,7 +10,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000', 'https://refco.miladz.eu'],
+    allow_origins=['http://localhost:3000',
+                   'https://refco.miladz.eu', 'http://127.0.0.1:3000'],
     allow_credentials=True,
     allow_methods=["POST"],
     allow_headers=["*"],
@@ -51,11 +52,13 @@ def get_scrap_data(reference, sites):
     data = []
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = []
-        for id, name in scrap_methods.items():
-            if (id in sites):
-                futures.append(executor.submit(
-                    get_scrap_function, scrap_function=name, ref=reference))
+        futures = [
+            executor.submit(
+                get_scrap_function, scrap_function=name, ref=reference
+            )
+            for id, name in scrap_methods.items()
+            if (id in sites)
+        ]
         for future in concurrent.futures.as_completed(futures):
             data.extend(future.result())
 

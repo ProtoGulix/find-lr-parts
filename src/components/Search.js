@@ -1,4 +1,5 @@
 import { optionDevise } from "../data/Devise";
+import { useLocation } from "react-router-dom";
 
 export function SearchForm() {
   return (
@@ -35,6 +36,9 @@ export function SearchForm() {
 }
 
 export function SearchSimple() {
+  const search = useLocation().search;
+  const ref = new URLSearchParams(search).get("r");
+
   // DROPDOWN
   document.addEventListener("DOMContentLoaded", function () {
     var dropdown = document.querySelector(".dropdown");
@@ -58,7 +62,7 @@ export function SearchSimple() {
                 type="text"
                 id="fref"
                 name="r"
-                size="30"
+                size="25"
               />
             </div>
             <div className="control">
@@ -79,7 +83,7 @@ export function SearchSimple() {
                   </span>
                 </a>
               </div>
-              <div className="dropdown-menu" id="dropdown-menu3" role="menu">
+              <div className="dropdown-menu" id="dropdown-menu" role="menu">
                 <div className="dropdown-content">
                   <a href="/" className="dropdown-item">
                     Overview

@@ -43,7 +43,7 @@ function Match(props) {
       >
         {price} {devise}
       </td>
-      <td>{data.name}</td>
+      <td className="is-hidden-mobile">{data.name}</td>
       <td>{data.manufacturer}</td>
 
       <td>

@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 // Elements
 import Match from "./Match";
 import DeviseChange from "./DeviseChange";
-import TaxeChange from "./TaxeChange";
 import Load from "./Load";
 import Error from "./Error";
 
@@ -23,7 +22,7 @@ function MatchList() {
       sites: ["jc", "sf", "lp", "ls", "bol", "pad", "rp"],
     });
 
-    fetch("https://refco.miladz.eu/api", {
+    fetch("http://localhost:8000/api", {
       method: "POST",
       headers: {
         Accept: "*/*",
@@ -62,15 +61,15 @@ function MatchList() {
 function List(props) {
   const list = props.data;
   const thead = (
-    <tr>
-      <th>
-        <abbr title="Référence">Réf</abbr>
-      </th>
-      <th className="is-danger">Prix</th>
-      <th>Déscription</th>
-      <th>Marque</th>
-      <th>Origine</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>Réf</th>
+        <th className="is-danger">Prix</th>
+        <th className="is-hidden-mobile">Déscription</th>
+        <th>Marque</th>
+        <th>Origine</th>
+      </tr>
+    </thead>
   );
 
   list.site.sort((a, b) => a.price - b.price);
@@ -78,12 +77,15 @@ function List(props) {
   if (list.score > 0) {
     return (
       <div className="container hero is-fullheight">
-        <div className="section pt-3">
+        <div className="section pt-3 section pt-3 pl-3 pr-3">
           <div className="is-vcentered match-commande mb-3" key="0000">
             <DeviseChange change={list.change} />
+            <span className="is-light mr-2">
+              {list.score} résultat(s) en {list.time} secondes
+            </span>
           </div>
           <table className="table is-fullwidth is-hoverable">
-            <thead>{thead}</thead>
+            {thead}
 
             <tbody>
               {list.site.map((data, index) => (
@@ -95,9 +97,7 @@ function List(props) {
       </div>
     );
   } else {
-    return (
-      <Error/>
-    );
+    return <Error />;
   }
 }
 
